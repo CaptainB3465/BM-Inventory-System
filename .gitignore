@@ -1,0 +1,17 @@
+target/
+*.class
+*.log
+.settings/
+.classpath
+.project
+.qodo/
+.vscode/
+bin/
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.rar
+order_response.txt
+test_request.json
+apache-maven-3.9.6/

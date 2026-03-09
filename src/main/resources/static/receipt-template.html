@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt - {{receiptNumber}}</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .receipt-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company-info {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .receipt-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .customer-info {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table th,
+        .items-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .items-table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .total-section {
+            border-top: 2px solid #333;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .payment-info {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .receipt-container {
+                box-shadow: none;
+                border: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <div class="company-name">B-MIS</div>
+            <div class="company-info">
+                123 Business Street<br>
+                City, State 12345<br>
+                Phone: (555) 123-4567
+            </div>
+        </div>
+
+        <div class="receipt-info">
+            <div>
+                <strong>Receipt #:</strong> {{receiptNumber}}
+            </div>
+            <div>
+                <strong>Date:</strong> {{generatedAt}}
+            </div>
+        </div>
+
+        <div class="customer-info">
+            <strong>Customer:</strong> {{customerName}}<br>
+            <strong>Order #:</strong> {{orderId}}
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#items}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{quantity}}</td>
+                    <td>${{price}}</td>
+                    <td>${{itemTotal}}</td>
+                </tr>
+                {{/items}}
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div class="total-row">
+                <span>Total Amount:</span>
+                <span>${{totalAmount}}</span>
+            </div>
+        </div>
+
+        <div class="payment-info">
+            <strong>Payment Method:</strong> {{paymentMethod}}<br>
+            <strong>Transaction ID:</strong> {{transactionId}}<br>
+            <strong>Status:</strong> {{paymentStatus}}
+        </div>
+
+        <div class="footer">
+            Thank you for your business!<br>
+            This is a computer-generated receipt.
+        </div>
+    </div>
+
+    <script>
+        // Auto-print when page loads
+        window.onload = function () {
+            window.print();
+        }
+    </script>
+</body>
+
+</html>
