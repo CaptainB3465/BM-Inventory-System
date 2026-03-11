@@ -1,18 +1,24 @@
 package com.example.inventory.model;
 
 public class LoginResponse {
-    private String username;
+    private String email;
+    private String fullName;
     private String role;
     private String status;
 
-    public LoginResponse(String username, String role, String status) {
-        this.username = username;
+    public LoginResponse(String email, String fullName, String role, String status) {
+        this.email = email;
+        this.fullName = fullName;
         this.role = role;
         this.status = status;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public String getRole() {

@@ -14,16 +14,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String password;
+    private String fullName;
+    private String email;
+    private String passcode;
     private String role; // "ADMIN" or "CUSTOMER"
+    private String resetCode;
 
     public User() {
     }
 
-    public User(String username, String password, String role) {
-        this.username = username;
-        this.password = password; // In a real app, this should be hashed
+    public User(String fullName, String email, String passcode, String role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.passcode = passcode; // In a real app, this should be hashed
         this.role = role;
     }
 
@@ -35,20 +38,28 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasscode() {
+        return passcode;
+    }
+
+    public void setPasscode(String passcode) {
+        this.passcode = passcode;
     }
 
     public String getRole() {
@@ -57,5 +68,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
     }
 }

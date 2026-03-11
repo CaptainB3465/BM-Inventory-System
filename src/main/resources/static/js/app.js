@@ -13,11 +13,13 @@ let cart = []; // For future multi-item orders, currently single-buy
 // Initialize app on DOM Load
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Check if user is already logged in (using sessionStorage for simple persistence)
-    const storedUser = sessionStorage.getItem('inventoryUser');
+    // Check if user is already logged in
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
         currentUser = JSON.parse(storedUser);
         showApp();
+    } else {
+        window.location.href = '/auth.html';
     }
 
     // Add event listener for login
@@ -120,8 +122,8 @@ function showApp() {
     document.getElementById('chatbotAppWidget').style.display = 'block';
 
     // Update Profile UI
-    document.getElementById('userNameDisplay').innerText = currentUser.username;
-    document.getElementById('userAvatar').innerText = currentUser.username.charAt(0).toUpperCase();
+    document.getElementById('userNameDisplay').innerText = currentUser.fullName || currentUser.email;
+    document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.email).charAt(0).toUpperCase();
 
     // Apply role restrictions
     applyRoleRestrictions();
@@ -142,7 +144,7 @@ function showApp() {
 
 function logout() {
     currentUser = null;
-    sessionStorage.removeItem('inventoryUser');
+    localStorage.removeItem('user');
     document.getElementById('loginForm').reset();
 
     document.getElementById('appSidebar').style.display = 'none';

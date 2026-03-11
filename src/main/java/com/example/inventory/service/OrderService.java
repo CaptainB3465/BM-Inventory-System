@@ -32,8 +32,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createOrder(String username, List<OrderItemRequest> itemRequests) {
-        User user = userRepository.findByUsername(username)
+    public Order createOrder(String email, List<OrderItemRequest> itemRequests) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         double totalAmount = 0;
@@ -122,8 +122,8 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public List<Order> getOrdersByUsername(String username) {
-        User user = userRepository.findByUsername(username)
+    public List<Order> getOrdersByUsername(String email) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return orderRepository.findByUser(user);
     }

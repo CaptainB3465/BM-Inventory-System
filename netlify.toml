@@ -3,7 +3,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://your-api-url.com/api/:splat"
+  to = "https://your-java-backend.railway.app/api/:splat" # Replace with your actual Java Server URL
   status = 200
   force = true
 

@@ -60,7 +60,7 @@ public class ReceiptController {
             Map<String, String> data = new HashMap<>();
             data.put("receiptNumber", receipt.getReceiptNumber());
             data.put("generatedAt", receipt.getGeneratedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            data.put("customerName", receipt.getOrder().getUser().getUsername());
+            data.put("customerName", receipt.getOrder().getUser().getEmail());
             data.put("orderId", receipt.getOrder().getId().toString());
             data.put("totalAmount", String.format("%.2f", receipt.getOrder().getTotalAmount()));
             data.put("paymentMethod", receipt.getPayment().getPaymentMethod());

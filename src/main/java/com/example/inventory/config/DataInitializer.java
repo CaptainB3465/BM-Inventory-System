@@ -26,8 +26,8 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Seed Users if empty
         if (userRepository.count() == 0) {
-            userRepository.save(new User("admin", "admin123", "ADMIN"));
-            userRepository.save(new User("customer", "cust123", "CUSTOMER"));
+            userRepository.save(new User("Admin User", "admin@example.com", "admin123", "ADMIN"));
+            userRepository.save(new User("Demo Customer", "customer@example.com", "cust123", "CUSTOMER"));
         }
 
         // Seed initial products if empty
