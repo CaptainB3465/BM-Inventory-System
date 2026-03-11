@@ -1,525 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B-MIS (Brian Munyua Inventory System)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <title>B-MIS | Dashboard</title>
+    <meta name="description" content="Brian Munyua Inventory System - Dashboard">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
-
 <body>
-    <div class="app-container">
 
+<!-- ============================================================
+     APP SHELL
+============================================================ -->
+<div class="app-shell" id="appShell">
 
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar" id="appSidebar" style="display: none;">
-            <div class="sidebar-header">
-                <i class="fa-solid fa-boxes-stacked logo-icon"></i>
-                <h2>B-MIS</h2>
+    <!-- --------------------------------------------------------
+         SIDEBAR
+    -------------------------------------------------------- -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Logo -->
+        <div class="sidebar-brand">
+            <div class="brand-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="brand-text">
+                <span class="brand-name">B-MIS</span>
+                <span class="brand-sub">Inventory System</span>
             </div>
-            <ul class="nav-links">
-                <li class="active"><a href="#" data-target="dashboard-view"><i class="fa-solid fa-chart-pie"></i>
-                        Dashboard</a></li>
-                <li><a href="#" data-target="products-view"><i class="fa-solid fa-box"></i> Catalog</a></li>
-                <li class="customer-only"><a href="#" data-target="marketplace-view"><i
-                            class="fa-solid fa-cart-shopping"></i> Marketplace</a></li>
-                <li><a href="#" data-target="orders-view"><i class="fa-solid fa-receipt"></i> Orders</a></li>
-                <li><a href="#" data-target="receipts-view"><i class="fa-solid fa-file-invoice"></i> Receipts</a></li>
-                <li class="admin-only"><a href="#" data-target="customers-view"><i class="fa-solid fa-users"></i>
-                        Customers</a></li>
-                <li><a href="#" data-target="settings-view"><i class="fa-solid fa-gear"></i> Settings</a></li>
-                <li><a href="#" data-target="about-view"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+
+                <li class="nav-section-label">Main</li>
+
+                <li class="nav-item active" data-target="dashboard-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-item" data-target="products-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-box"></i></span>
+                        <span class="nav-label">Products</span>
+                    </a>
+                </li>
+
+                <li class="nav-item" data-target="stock-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-warehouse"></i></span>
+                        <span class="nav-label">Stock Management</span>
+                    </a>
+                </li>
+
+                <li class="nav-item" data-target="orders-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+                        <span class="nav-label">Sales</span>
+                    </a>
+                </li>
+
+                <li class="nav-section-label">Administration</li>
+
+                <li class="nav-item admin-only" data-target="suppliers-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-truck"></i></span>
+                        <span class="nav-label">Suppliers</span>
+                    </a>
+                </li>
+
+                <li class="nav-item admin-only" data-target="customers-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+                        <span class="nav-label">Customers</span>
+                    </a>
+                </li>
+
+                <li class="nav-item admin-only" data-target="reports-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-chart-bar"></i></span>
+                        <span class="nav-label">Reports</span>
+                    </a>
+                </li>
+
+                <li class="nav-section-label">System</li>
+
+                <li class="nav-item" data-target="settings-view">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+                        <span class="nav-label">Settings</span>
+                    </a>
+                </li>
+
             </ul>
         </nav>
 
-        <!-- Main Content -->
-        <main class="main-content" id="appMain" style="display: none;">
-            <header class="top-header">
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search products...">
-                </div>
-                <div class="user-profile">
-                    <div class="avatar" id="userAvatar">U</div>
-                    <span id="userNameDisplay">User</span>
-                    <button class="btn-secondary" onclick="logout()"
-                        style="padding: 4px 8px; font-size: 0.8rem; margin-left: 12px;"><i
-                            class="fa-solid fa-right-from-bracket"></i></button>
-                </div>
-            </header>
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
 
-            <div class="content-wrapper view-section" id="dashboard-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Inventory Overview</h1>
-                    <button class="btn-primary admin-only" onclick="openModal()"><i class="fa-solid fa-plus"></i> Add
-                        Product</button>
-                </div>
+    </aside>
 
-                <!-- Metrics Cards -->
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-icon blue"><i class="fa-solid fa-boxes"></i></div>
-                        <div class="metric-info">
-                            <h3>Total Products</h3>
-                            <p id="totalProducts">0</p>
-                        </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon green"><i class="fa-solid fa-dollar-sign"></i></div>
-                        <div class="metric-info">
-                            <h3>Total Value</h3>
-                            <p id="totalValue">$0.00</p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Products Table -->
-                <div class="table-container">
-                    <table id="inventoryTable">
-                        <thead>
-                            <tr>
-                                <th>SKU</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventoryBody">
-                            <!-- Rows populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
+    <!-- --------------------------------------------------------
+         MAIN AREA
+    -------------------------------------------------------- -->
+    <div class="main-area">
+
+        <!-- TOP NAVIGATION BAR -->
+        <header class="top-nav">
+            <!-- Hamburger (mobile) -->
+            <button class="hamburger" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- System Title -->
+            <div class="top-nav-brand d-none d-md-block">
+                Brian Munyua Inventory System <span class="brand-tag">(B-MIS)</span>
             </div>
 
-            <div class="content-wrapper view-section" id="products-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Product Catalog</h1>
-                    <button class="btn-primary admin-only" onclick="openModal()"><i class="fa-solid fa-plus"></i> Add
-                        Product</button>
+            <!-- Search -->
+            <div class="top-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search products…" autocomplete="off">
+            </div>
+
+            <!-- Right actions -->
+            <div class="top-nav-actions">
+                <!-- Notifications -->
+                <button class="icon-btn" aria-label="Notifications" title="Notifications">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge-dot"></span>
+                </button>
+
+                <!-- User profile -->
+                <div class="user-chip" id="userChip">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span class="user-name d-none d-md-block" id="userNameDisplay">User</span>
+                    <i class="fa-solid fa-angle-down fs-xs d-none d-md-block"></i>
                 </div>
+            </div>
+        </header>
+
+
+        <!-- PAGE CONTENT AREA -->
+        <main class="page-body" id="pageBody">
+
+            <!-- ================================================
+                 DASHBOARD VIEW
+            ================================================ -->
+            <section class="view-section" id="dashboard-view">
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-subtitle">Welcome back! Here's what's happening today.</p>
+                    </div>
+                    <button class="btn-action admin-only" onclick="openModal()">
+                        <i class="fa-solid fa-plus"></i> Add Product
+                    </button>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="stats-grid">
+
+                    <div class="stat-card" id="card-products">
+                        <div class="stat-icon icon-blue">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div class="stat-body">
+                            <p class="stat-label">Total Products</p>
+                            <h2 class="stat-value" id="totalProducts">—</h2>
+                            <p class="stat-change positive"><i class="fa-solid fa-arrow-trend-up"></i> Active SKUs</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="card-stock">
+                        <div class="stat-icon icon-green">
+                            <i class="fa-solid fa-warehouse"></i>
+                        </div>
+                        <div class="stat-body">
+                            <p class="stat-label">Total Stock Units</p>
+                            <h2 class="stat-value" id="totalStock">—</h2>
+                            <p class="stat-change positive"><i class="fa-solid fa-layer-group"></i> Units in hand</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="card-sales">
+                        <div class="stat-icon icon-purple">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-body">
+                            <p class="stat-label">Total Sales Value</p>
+                            <h2 class="stat-value" id="totalValue">—</h2>
+                            <p class="stat-change positive"><i class="fa-solid fa-chart-line"></i> Inventory value</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="card-lowstock">
+                        <div class="stat-icon icon-amber">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="stat-body">
+                            <p class="stat-label">Low Stock Items</p>
+                            <h2 class="stat-value" id="lowStockCount">—</h2>
+                            <p class="stat-change warning"><i class="fa-solid fa-circle-exclamation"></i> Needs attention</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Charts + Table Row -->
+                <div class="dashboard-grid">
+
+                    <!-- Stock Activity Chart -->
+                    <div class="dash-card chart-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Stock Overview</h3>
+                            <span class="badge-pill">Live</span>
+                        </div>
+                        <div class="chart-wrap">
+                            <canvas id="stockChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Category Donut -->
+                    <div class="dash-card donut-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Inventory Health</h3>
+                        </div>
+                        <div class="chart-wrap donut-wrap">
+                            <canvas id="healthChart"></canvas>
+                        </div>
+                        <div class="donut-legend" id="donutLegend"></div>
+                    </div>
+
+                </div>
+
+                <!-- Recent Products Table -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3 class="dash-card-title">Recent Products</h3>
+                        <a href="#" class="link-more" data-target="products-view">View all →</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="recentTable">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th class="admin-only">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTableBody">
+                                <tr><td colspan="7" class="empty-state">
+                                    <i class="fa-solid fa-circle-notch fa-spin"></i> Loading…
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================================================
+                 PRODUCTS VIEW
+            ================================================ -->
+            <section class="view-section hidden" id="products-view">
+
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Product Catalog</h1>
+                        <p class="page-subtitle">Manage all your products in one place.</p>
+                    </div>
+                    <button class="btn-action admin-only" onclick="openModal()">
+                        <i class="fa-solid fa-plus"></i> Add Product
+                    </button>
+                </div>
+
                 <div class="product-gallery" id="productGallery">
-                    <!-- Cards populated via JS -->
+                    <div class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</div>
                 </div>
-            </div>
 
-            <div class="content-wrapper view-section" id="marketplace-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Marketplace</h1>
-                    <div class="cart-status">
-                        <i class="fa-solid fa-cart-shopping"></i> <span id="cartCount">0</span> items
+            </section>
+
+
+            <!-- ================================================
+                 STOCK MANAGEMENT VIEW
+            ================================================ -->
+            <section class="view-section hidden" id="stock-view">
+
+                <div class="page-header">
+                    <h1 class="page-title">Stock Management</h1>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3 class="dash-card-title">All Stock</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="inventoryTable">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th class="admin-only">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryBody">
+                                <tr><td colspan="6" class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="product-gallery" id="marketplaceGallery">
-                    <!-- Cards with Buy buttons populated via JS -->
-                </div>
-            </div>
 
-            <div class="content-wrapper view-section" id="orders-view" style="display: none;">
-                <div class="header-actions">
-                    <h1 id="ordersHeader">Order History</h1>
-                </div>
-                <div class="table-container">
-                    <table id="orderTable">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Items</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderBody">
-                            <!-- Rows populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </section>
 
-            <div class="content-wrapper view-section" id="receipts-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Receipts & Invoices</h1>
-                </div>
-                <div class="table-container">
-                    <table id="receiptTable">
-                        <thead>
-                            <tr>
-                                <th>Receipt #</th>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="receiptBody">
-                            <!-- Rows populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-            <div class="content-wrapper view-section" id="customers-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Customer Directory</h1>
-                    <button class="btn-primary admin-only" onclick="openCustomerModal()"><i
-                            class="fa-solid fa-user-plus"></i> Add Customer</button>
-                </div>
-                <div class="table-container">
-                    <table id="customerTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Contact Info</th>
-                                <th>Address</th>
-                                <th>Orders</th>
-                                <th>Status</th>
-                                <th class="admin-only">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="customerBody">
-                            <!-- Rows populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <!-- ================================================
+                 SALES / ORDERS VIEW
+            ================================================ -->
+            <section class="view-section hidden" id="orders-view">
 
-            <div class="content-wrapper view-section" id="settings-view" style="display: none;">
-                <div class="header-actions">
-                    <h1>Settings</h1>
+                <div class="page-header">
+                    <h1 class="page-title" id="ordersHeader">Sales</h1>
                 </div>
-                <div class="table-container" style="padding: 30px; max-width: 800px; margin: 0 auto;">
+
+                <div class="dash-card">
+                    <div class="table-responsive">
+                        <table class="data-table" id="orderTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderBody">
+                                <tr><td colspan="7" class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================================================
+                 SUPPLIERS VIEW (placeholder)
+            ================================================ -->
+            <section class="view-section hidden" id="suppliers-view">
+                <div class="page-header"><h1 class="page-title">Suppliers</h1></div>
+                <div class="dash-card text-center py-5">
+                    <i class="fa-solid fa-truck fa-3x mb-3" style="color:var(--primary-light)"></i>
+                    <p class="text-muted">Supplier management will be available in the next release.</p>
+                </div>
+            </section>
+
+
+            <!-- ================================================
+                 CUSTOMERS VIEW
+            ================================================ -->
+            <section class="view-section hidden" id="customers-view">
+
+                <div class="page-header">
+                    <h1 class="page-title">Customer Directory</h1>
+                    <button class="btn-action admin-only" onclick="openCustomerModal()">
+                        <i class="fa-solid fa-user-plus"></i> Add Customer
+                    </button>
+                </div>
+
+                <div class="dash-card">
+                    <div class="table-responsive">
+                        <table class="data-table" id="customerTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th>Orders</th>
+                                    <th>Status</th>
+                                    <th class="admin-only">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerBody">
+                                <tr><td colspan="6" class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================================================
+                 REPORTS VIEW (placeholder)
+            ================================================ -->
+            <section class="view-section hidden" id="reports-view">
+                <div class="page-header"><h1 class="page-title">Reports</h1></div>
+                <div class="dash-card text-center py-5">
+                    <i class="fa-solid fa-chart-bar fa-3x mb-3" style="color:var(--primary-light)"></i>
+                    <p class="text-muted">Advanced reporting coming soon.</p>
+                </div>
+            </section>
+
+
+            <!-- ================================================
+                 SETTINGS VIEW
+            ================================================ -->
+            <section class="view-section hidden" id="settings-view">
+
+                <div class="page-header"><h1 class="page-title">Settings</h1></div>
+
+                <div class="dash-card" style="max-width:700px">
                     <form id="settingsForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="settingCompanyName">Company Name</label>
-                                <input type="text" id="settingCompanyName" required>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" id="settingCompanyName" class="form-control" placeholder="Brian Munyua Inventory">
                             </div>
-                            <div class="form-group">
-                                <label for="settingCurrency">Currency Code</label>
-                                <select id="settingCurrency"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);">
+                            <div class="col-md-6">
+                                <label class="form-label">Currency</label>
+                                <select id="settingCurrency" class="form-select">
                                     <option value="USD">USD ($)</option>
+                                    <option value="KES">KES (KSh)</option>
                                     <option value="EUR">EUR (€)</option>
                                     <option value="GBP">GBP (£)</option>
-                                    <option value="JPY">JPY (¥)</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="settingThreshold">Low Stock Threshold</label>
-                                <input type="number" id="settingThreshold" min="1" required>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Low Stock Threshold</label>
+                                <input type="number" id="settingThreshold" class="form-control" min="1" value="10">
                             </div>
-                            <div class="form-group">
-                                <label for="settingEmail">Support Email</label>
-                                <input type="email" id="settingEmail" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="settingTheme">Display Theme</label>
-                                <select id="settingTheme"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md);">
-                                    <option value="Light">Light Mode</option>
-                                    <option value="Dark">Dark Mode</option>
-                                </select>
-                            </div>
-                            <div class="form-group"
-                                style="display: flex; align-items: center; gap: 10px; padding-top: 30px;">
-                                <input type="checkbox" id="settingChatbot" style="width: 20px; height: 20px;">
-                                <label for="settingChatbot" style="margin-bottom: 0;">Enable AI Chatbot</label>
+                            <div class="col-md-6">
+                                <label class="form-label">Support Email</label>
+                                <input type="email" id="settingEmail" class="form-control" placeholder="support@company.com">
                             </div>
                         </div>
-                        <div class="form-actions" style="margin-top: 30px; justify-content: flex-end;">
-                            <button type="submit" class="btn-primary" style="padding: 12px 24px;">Save
-                                Configuration</button>
-                        </div>
+
+                        <button type="submit" class="btn-action mt-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Settings
+                        </button>
+
                     </form>
                 </div>
-            </div>
+
+            </section>
+
         </main>
+    </div>
+</div>
 
-        <!-- Product Modal -->
-        <div id="productModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <h2 id="modalTitle">Add New Product</h2>
-                <form id="productForm">
-                    <input type="hidden" id="productId">
-                    <div class="form-group">
-                        <label for="sku">SKU</label>
-                        <input type="text" id="sku" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Product Name</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea id="description" rows="3"></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price ($)</label>
-                            <input type="number" id="price" step="0.01" min="0" required>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="btn-primary">Save Product</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <!-- Customer Modal -->
-        <div id="customerModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeCustomerModal()">&times;</span>
-                <h2 id="customerModalTitle">Add New Customer</h2>
-                <form id="customerForm">
-                    <input type="hidden" id="customerId">
-                    <div class="form-group">
-                        <label for="customerName">Full Name</label>
-                        <input type="text" id="customerName" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="customerEmail">Email</label>
-                            <input type="email" id="customerEmail" required
-                                style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md); font-family: inherit;">
-                        </div>
-                        <div class="form-group">
-                            <label for="customerPhone">Phone Number</label>
-                            <input type="text" id="customerPhone" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerAddress">Business Address</label>
-                        <textarea id="customerAddress" rows="2"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerStatus">Status</label>
-                        <select id="customerStatus"
-                            style="width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md); font-family: inherit;">
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                        </select>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="closeCustomerModal()">Cancel</button>
-                        <button type="submit" class="btn-primary">Save Customer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <!-- About Section -->
-        <div class="content-wrapper view-section" id="about-view" style="display: none;">
-            <div class="header-actions">
-                <h1>About B-MIS (Brian Munyua Inventory System)</h1>
+<!-- ============================================================
+     PRODUCT MODAL
+============================================================ -->
+<div id="productModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="modal-title" id="modalTitle">Add New Product</h2>
+        <form id="productForm">
+            <input type="hidden" id="productId">
+
+            <div class="mb-3">
+                <label class="form-label">SKU</label>
+                <input type="text" id="sku" class="form-control" required placeholder="e.g. ELE-1001">
             </div>
 
-            <div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
-                <!-- Contact Information -->
-                <div class="card"
-                    style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 30px; border-radius: var(--radius-lg); margin-bottom: 30px;">
-                    <h2 style="color: white; margin-top: 0;">Get In Touch</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
-                        <div>
-                            <h3 style="color: white; margin-bottom: 10px;"><i class="fa-solid fa-envelope"></i> Email
-                            </h3>
-                            <p style="font-size: 1.1em; margin: 0;">
-                                <a href="mailto:munyuabrian712@gmail.com"
-                                    style="color: white; text-decoration: none;">munyuabrian712@gmail.com</a>
-                            </p>
-                        </div>
-                        <div>
-                            <h3 style="color: white; margin-bottom: 10px;"><i class="fa-solid fa-phone"></i> Phone</h3>
-                            <p style="font-size: 1.1em; margin: 0;">
-                                <a href="tel:+254719328502" style="color: white; text-decoration: none;">+254 719 328
-                                    502</a>
-                            </p>
-                        </div>
-                    </div>
+            <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text" id="name" class="form-control" required placeholder="e.g. Mechanical Keyboard">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea id="description" class="form-control" rows="2" placeholder="Brief description…"></textarea>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" id="quantity" class="form-control" min="0" required>
                 </div>
-
-                <!-- Testimonials Section -->
-                <div style="margin-bottom: 40px;">
-                    <h2 style="text-align: center; margin-bottom: 30px; color: var(--dark-text);">Customer Testimonials
-                    </h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    JM</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">James Mwangi</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">Retail Manager</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "B-MIS has completely transformed our inventory management. We've reduced stock
-                                discrepancies by 95% and our order fulfillment is now 3x faster. Highly recommended!"
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    SK</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">Sarah Kipchoge</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">Business Owner</p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "The AI assistant feature is incredible! It answers all my inventory questions
-                                instantly. I've saved hundreds of hours and can focus on growing my business."
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    PC</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">Peter Chege</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">Warehouse Manager
-                                    </p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "Best inventory system we've implemented. The automated receipt generation alone has cut
-                                our admin work in half. Great support team too!"
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    LK</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">Lucy Kariuki</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">E-commerce Director
-                                    </p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "Seamless integration with our existing systems. The real-time inventory tracking has
-                                eliminated overselling incidents. ROI achieved in 3 months."
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    RO</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">Robert Omondi</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">Supply Chain Lead
-                                    </p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "Professional, reliable, and user-friendly. Our team learned it in just one training
-                                session. Exceptional customer service!"
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                        <div class="card"
-                            style="padding: 20px; border-left: 4px solid var(--success); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                                <div
-                                    style="width: 50px; height: 50px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                    EM</div>
-                                <div>
-                                    <p style="margin: 0; font-weight: bold;">Emma Musyoki</p>
-                                    <p style="margin: 0; font-size: 0.9em; color: var(--gray-500);">Operations Manager
-                                    </p>
-                                </div>
-                            </div>
-                            <p style="color: var(--gray-600); line-height: 1.6;">
-                                "Scalable solution that grows with our business. The reporting features give us insights
-                                we never had before. Definitely worth the investment."
-                            </p>
-                            <div style="color: var(--warning);">★★★★★</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Call to Action -->
-                <div class="card"
-                    style="background: var(--light-bg); padding: 30px; text-align: center; border-radius: var(--radius-lg); margin-top: 40px;">
-                    <h3 style="color: var(--primary); margin-bottom: 15px;">Ready to Transform Your Inventory
-                        Management?</h3>
-                    <p style="color: var(--gray-600); margin-bottom: 20px;">Join hundreds of businesses that trust
-                        B-MIS for their inventory needs.</p>
-                    <a href="mailto:munyuabrian712@gmail.com"
-                        style="display: inline-block; background: var(--primary); color: white; padding: 12px 30px; border-radius: var(--radius-md); text-decoration: none; font-weight: 600;">Contact
-                        Us Today</a>
+                <div class="col-6">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" id="price" class="form-control" step="0.01" min="0" required>
                 </div>
             </div>
-        </div>
 
-        <!-- AI Assistant Widget -->
-        <div class="chatbot-widget" id="chatbotAppWidget" style="display: none;">
-            <button class="chatbot-toggle" onclick="toggleChatbot()">
-                <i class="fa-solid fa-robot"></i>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary-sm" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn-action">Save Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     CUSTOMER MODAL
+============================================================ -->
+<div id="customerModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeCustomerModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="modal-title" id="customerModalTitle">Add New Customer</h2>
+        <form id="customerForm">
+            <input type="hidden" id="customerId">
+
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="customerName" class="form-control" required>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="customerEmail" class="form-control" required>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Phone</label>
+                    <input type="text" id="customerPhone" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <textarea id="customerAddress" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select id="customerStatus" class="form-select">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary-sm" onclick="closeCustomerModal()">Cancel</button>
+                <button type="submit" class="btn-action">Save Customer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     AI CHATBOT WIDGET
+============================================================ -->
+<div class="chatbot-widget" id="chatbotAppWidget" style="display:none">
+    <button class="chatbot-fab" onclick="toggleChatbot()" title="AI Assistant">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+    <div class="chatbot-panel" id="chatbotContainer">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fa-solid fa-robot"></i> AI Assistant
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()">
+                <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="chatbot-container" id="chatbotContainer">
-                <div class="chatbot-header">
-                    <h3>AI Assistant</h3>
-                    <button class="close-chat" onclick="toggleChatbot()"><i class="fa-solid fa-times"></i></button>
-                </div>
-                <div class="chatbot-messages" id="chatMessages">
-                    <div class="message ai">
-                        <img src="https://cdn-icons-png.flaticon.com/512/8649/8649595.png" alt="AI Icon"
-                            class="msg-avatar">
-                        <div class="msg-content">Hello! I'm your Nexus AI Assistant. Ask me anything about your
-                            inventory.</div>
-                    </div>
-                </div>
-                <div class="chatbot-input">
-                    <input type="text" id="chatInput" placeholder="Type your message..."
-                        onkeypress="handleChatKeypress(event)">
-                    <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="chat-msg ai">
+                <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="chat-bubble">Hello! I'm your B-MIS AI Assistant. How can I help you today?</div>
             </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Ask anything about your inventory…"
+                   onkeypress="handleChatKeypress(event)">
+            <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
+</div>
 
-    <script src="js/app.js?v=2"></script>
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
-
 </html>

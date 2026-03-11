@@ -3,188 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth - B-MIS Inventory System</title>
-    <link rel="stylesheet" href="css/auth.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>B-MIS | Login</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
 
-    <div class="bg-visuals">
-        <div class="grid-overlay"></div>
-        <div class="abstract-shape shape-1"></div>
-        <div class="abstract-shape shape-2"></div>
+    <!-- ============================================================
+         BACKGROUND VISUALS
+    ============================================================ -->
+    <div class="bg-wrapper">
+        <img src="images/login_bg.png" alt="" class="bg-image" aria-hidden="true">
+        <div class="bg-overlay"></div>
+        <!-- Floating animated particles -->
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
     </div>
 
-    <main class="page-wrapper">
-        <!-- Branding Section -->
-        <section class="brand-section">
-            <div class="brand-logo-container">
-                <img src="images/logo.png" alt="B-MIS Logo" class="logo-main">
-                <h1 class="brand-name">B-MIS</h1>
-                <p class="brand-tagline">Brian Munyua Inventory System</p>
-                
-                <div class="features-icons">
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
-                        <span>Security</span>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-boxes-stacked"></i></div>
-                        <span>Inventory</span>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-                        <span>Analytics</span>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Auth Section -->
-        <section class="auth-section">
-            <!-- Login View -->
-            <div id="login-view" class="auth-card">
-                <div class="auth-header">
-                    <h2>Welcome Back</h2>
-                    <p>Enter your credentials to access B-MIS</p>
-                </div>
-                <div id="login-error" class="error-message">Invalid credentials. Please try again.</div>
-                
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="login-email" placeholder="name@company.com">
+    <!-- ============================================================
+         MAIN PAGE CONTENT
+    ============================================================ -->
+    <main class="page-center">
+
+        <!-- --------------------------------------------------------
+             LOGIN CARD
+        -------------------------------------------------------- -->
+        <div id="login-view" class="auth-card">
+
+            <!-- Logo & Branding -->
+            <div class="card-brand text-center">
+                <img src="images/logo.png" alt="B-MIS Logo" class="brand-logo">
+                <h1 class="brand-title"><span class="brand-b">B</span>-MIS</h1>
+                <p class="brand-subtitle">Brian Munyua Inventory System</p>
+            </div>
+
+            <hr class="divider-line">
+
+            <!-- Error banner (hidden by default) -->
+            <div id="login-error" class="alert-box alert-error" role="alert">
+                <i class="fas fa-circle-exclamation"></i>
+                <span id="login-error-text">Invalid credentials. Please try again.</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" novalidate>
+
+                <!-- Username Field -->
+                <div class="field-group">
+                    <label for="login-email" class="field-label">Username / Email</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input
+                            type="email"
+                            id="login-email"
+                            class="field-input"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required>
                     </div>
+                    <p class="field-feedback" id="email-feedback"></p>
                 </div>
-                <div class="form-group">
-                    <label>Passcode</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="login-passcode" placeholder="••••••">
+
+                <!-- Password Field -->
+                <div class="field-group">
+                    <div class="label-row">
+                        <label for="login-passcode" class="field-label">Password</label>
+                        <a href="#" id="to-forgot" class="forgot-link">Forgot Password?</a>
                     </div>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input
+                            type="password"
+                            id="login-passcode"
+                            class="field-input"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required>
+                        <!-- Show/Hide password toggle -->
+                        <button type="button" class="pwd-toggle" id="pwd-toggle" aria-label="Toggle password visibility">
+                            <i class="fa-solid fa-eye" id="pwd-icon"></i>
+                        </button>
+                    </div>
+                    <p class="field-feedback" id="pwd-feedback"></p>
                 </div>
-                
-                <button id="login-btn" class="btn-primary">
-                    <span>Login to System</span>
-                    <i class="fas fa-arrow-right"></i>
+
+                <!-- Remember Me -->
+                <div class="remember-row">
+                    <label class="check-label">
+                        <input type="checkbox" id="remember-me" class="check-input">
+                        <span class="check-box"></span>
+                        Remember me
+                    </label>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" id="login-btn" class="btn-login">
+                    <span>Login</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
                 </button>
-                
-                <div class="auth-footer">
-                    Don't have an account? <a href="#" id="to-register">Register Now</a><br>
-                    <a href="#" id="to-forgot" style="margin-top: 0.5rem; display: inline-block;">Forgot your passcode?</a>
-                </div>
-            </div>
 
-            <!-- Register View -->
-            <div id="register-view" class="auth-card hidden">
-                <div class="auth-header">
-                    <h2>Create Account</h2>
-                    <p>Join B-MIS Inventory System</p>
-                </div>
-                <div id="reg-error" class="error-message"></div>
-                
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="reg-name" placeholder="John Doe">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="reg-email" placeholder="name@company.com">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Passcode</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="reg-passcode" placeholder="Min 6 characters">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Passcode</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-check-double"></i>
-                        <input type="password" id="reg-confirm" placeholder="••••••">
-                    </div>
-                </div>
-                
-                <button id="register-btn" class="btn-primary">Create Account</button>
-                <div class="auth-footer">
-                    Already have an account? <a href="#" id="to-login">Login Here</a>
-                </div>
-            </div>
+            </form>
 
-            <!-- Forgot View -->
-            <div id="forgot-view" class="auth-card hidden">
-                <div class="auth-header">
-                    <h2>Forgot Passcode?</h2>
-                    <p>We'll send a reset code to your email</p>
-                </div>
-                <div id="forgot-error" class="error-message"></div>
-                <div id="forgot-success" class="success-message"></div>
-                
-                <div class="form-group">
-                    <label>Registered Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="forgot-email" placeholder="name@company.com">
-                    </div>
-                </div>
-                
-                <button id="forgot-btn" class="btn-primary">Send Reset Code</button>
-                <div class="auth-footer">
-                    Remembered it? <a href="#" id="to-login-2">Back to Login</a>
-                </div>
-            </div>
+            <!-- Register Link -->
+            <p class="card-footer-text">
+                Don't have an account?
+                <a href="#" id="to-register" class="link-action">Create Account</a>
+            </p>
+        </div>
 
-            <!-- Reset View -->
-            <div id="reset-view" class="auth-card hidden">
-                <div class="auth-header">
-                    <h2>Reset Passcode</h2>
-                    <p>Enter the code sent to your email</p>
-                </div>
-                <div id="reset-error" class="error-message"></div>
-                
-                <div class="form-group" style="display:none;">
-                    <input type="hidden" id="reset-email">
-                </div>
-                <div class="form-group">
-                    <label>Reset Code</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-key"></i>
-                        <input type="text" id="reset-code" placeholder="6-digit code">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>New Passcode</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="reset-passcode" placeholder="Min 6 characters">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Confirm New Passcode</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-check-double"></i>
-                        <input type="password" id="reset-confirm" placeholder="••••••">
-                    </div>
-                </div>
-                
-                <button id="reset-btn" class="btn-primary">Update Passcode</button>
-                <div class="auth-footer">
-                    <a href="#" id="to-login-3">Back to Login</a>
-                </div>
+
+        <!-- --------------------------------------------------------
+             REGISTER CARD (hidden by default)
+        -------------------------------------------------------- -->
+        <div id="register-view" class="auth-card hidden">
+
+            <div class="card-brand text-center">
+                <img src="images/logo.png" alt="B-MIS Logo" class="brand-logo">
+                <h1 class="brand-title"><span class="brand-b">B</span>-MIS</h1>
             </div>
-        </section>
+            <h2 class="form-heading">Create Account</h2>
+
+            <div id="reg-error" class="alert-box alert-error" role="alert"></div>
+            <div id="reg-success" class="alert-box alert-success" role="alert"></div>
+
+            <form id="register-form" novalidate>
+
+                <div class="field-group">
+                    <label for="reg-name" class="field-label">Full Name</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-id-card input-icon"></i>
+                        <input type="text" id="reg-name" class="field-input" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="reg-email" class="field-label">Email Address</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="reg-email" class="field-input" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="reg-passcode" class="field-label">Passcode</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="reg-passcode" class="field-input" placeholder="Min 6 characters" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="reg-confirm" class="field-label">Confirm Passcode</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="reg-confirm" class="field-input" placeholder="••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="register-btn" class="btn-login">
+                    <span>Create Account</span>
+                    <i class="fa-solid fa-check"></i>
+                </button>
+
+            </form>
+
+            <p class="card-footer-text">
+                Already have an account?
+                <a href="#" id="to-login" class="link-action">Login</a>
+            </p>
+        </div>
+
+
+        <!-- --------------------------------------------------------
+             FORGOT PASSWORD CARD (hidden by default)
+        -------------------------------------------------------- -->
+        <div id="forgot-view" class="auth-card hidden">
+
+            <div class="card-brand text-center">
+                <img src="images/logo.png" alt="B-MIS Logo" class="brand-logo brand-logo-sm">
+                <h1 class="brand-title"><span class="brand-b">B</span>-MIS</h1>
+            </div>
+            <h2 class="form-heading">Reset Password</h2>
+            <p class="form-subheading">Enter your email and we'll send you a reset code.</p>
+
+            <div id="forgot-error" class="alert-box alert-error"></div>
+            <div id="forgot-success" class="alert-box alert-success"></div>
+
+            <form id="forgot-form" novalidate>
+                <div class="field-group">
+                    <label for="forgot-email" class="field-label">Registered Email</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" id="forgot-email" class="field-input" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <button type="submit" id="forgot-btn" class="btn-login">
+                    <span>Send Reset Code</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+
+            <p class="card-footer-text">
+                Remember it?
+                <a href="#" id="to-login-2" class="link-action">Back to Login</a>
+            </p>
+        </div>
+
+
+        <!-- --------------------------------------------------------
+             RESET PASSCODE CARD (hidden by default)
+        -------------------------------------------------------- -->
+        <div id="reset-view" class="auth-card hidden">
+
+            <div class="card-brand text-center">
+                <img src="images/logo.png" alt="B-MIS Logo" class="brand-logo brand-logo-sm">
+                <h1 class="brand-title"><span class="brand-b">B</span>-MIS</h1>
+            </div>
+            <h2 class="form-heading">Set New Password</h2>
+
+            <div id="reset-error" class="alert-box alert-error"></div>
+
+            <form id="reset-form" novalidate>
+                <input type="hidden" id="reset-email">
+
+                <div class="field-group">
+                    <label for="reset-code" class="field-label">Reset Code</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-key input-icon"></i>
+                        <input type="text" id="reset-code" class="field-input" placeholder="6-digit code" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="reset-passcode" class="field-label">New Passcode</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="reset-passcode" class="field-input" placeholder="Min 6 characters" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="reset-confirm" class="field-label">Confirm Passcode</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="reset-confirm" class="field-input" placeholder="••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="reset-btn" class="btn-login">
+                    <span>Update Password</span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+            </form>
+
+            <p class="card-footer-text">
+                <a href="#" id="to-login-3" class="link-action">Back to Login</a>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <p class="page-footer">© 2025 B-MIS · Brian Munyua Inventory System</p>
+
     </main>
 
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Auth Logic -->
     <script src="js/auth.js"></script>
 </body>
 </html>
-

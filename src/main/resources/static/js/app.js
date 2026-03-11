@@ -22,14 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/auth.html';
     }
 
-    // Add event listener for login
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-
     // Add event listener for product form submit
-    document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
+    const productForm = document.getElementById('productForm');
+    if (productForm) productForm.addEventListener('submit', handleFormSubmit);
 
     // Add event listener for customer form submit
-    document.getElementById('customerForm').addEventListener('submit', handleCustomerSubmit);
+    const customerForm = document.getElementById('customerForm');
+    if (customerForm) customerForm.addEventListener('submit', handleCustomerSubmit);
 
     // Add event listener for settings form submit
     const settingsForm = document.getElementById('settingsForm');
@@ -45,121 +44,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- Auth Handlers ---
-async function handleLogin(e) {
-    console.log('handleLogin called with event:', e);
-    e.preventDefault();
-    const usernameInput = document.getElementById('username').value.trim();
-    const passwordInput = document.getElementById('password').value;
-    const errorMsg = document.getElementById('loginError');
-
-    console.log('Username:', usernameInput, 'Password length:', passwordInput.length);
-
-    // Reset error message
-    errorMsg.style.display = 'none';
-
-    // Validate input
-    if (!usernameInput || !passwordInput) {
-        errorMsg.innerText = 'Please enter both username and password.';
-        errorMsg.style.display = 'block';
-        console.warn('Login validation failed - empty credentials');
-        return;
-    }
-
-    try {
-        console.log('Sending login request to:', `${API_BASE_URL}/auth/login`);
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: usernameInput, password: passwordInput })
-        });
-
-        console.log('Login response status:', response.status);
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Login successful:', data);
-            currentUser = { username: data.username, role: data.role };
-            sessionStorage.setItem('inventoryUser', JSON.stringify(currentUser));
-            showApp();
-        } else if (response.status === 401) {
-            console.log('Login returned 401, trying fallback');
-            // Try fallback login for demo purposes
-            tryFallbackLogin(usernameInput, passwordInput, errorMsg);
-        } else {
-            console.error('Login failed with status:', response.status);
-            errorMsg.innerText = 'Login failed. Please try again.';
-            errorMsg.style.display = 'block';
-        }
-    } catch (error) {
-        console.error("Login Error: ", error);
-        // Fallback for offline mode or API errors
-        tryFallbackLogin(usernameInput, passwordInput, errorMsg);
-    }
-}
-
-function tryFallbackLogin(username, password, errorMsg) {
-    // Demo credentials fallback
-    if (username === 'admin' && password === 'admin123') {
-        currentUser = { username: 'admin', role: 'ADMIN' };
-        sessionStorage.setItem('inventoryUser', JSON.stringify(currentUser));
-        showApp();
-    } else if (username === 'customer' && password === 'cust123') {
-        currentUser = { username: 'customer', role: 'CUSTOMER' };
-        sessionStorage.setItem('inventoryUser', JSON.stringify(currentUser));
-        showApp();
-    } else {
-        errorMsg.innerText = 'Invalid username or password. Demo: admin/admin123 or customer/cust123';
-        errorMsg.style.display = 'block';
-    }
-}
+// Login is now handled by auth.js on auth.html page.
+// app.js only handles the authenticated state on index.html.
 
 function showApp() {
-    document.getElementById('login-view').classList.remove('active');
-    document.getElementById('login-view').style.display = 'none';
-
-    document.getElementById('appSidebar').style.display = 'flex';
-    document.getElementById('appMain').style.display = 'flex';
-    document.getElementById('chatbotAppWidget').style.display = 'block';
+    // Show chatbot widget (sidebar and main-area are always visible in new layout)
+    const chatbot = document.getElementById('chatbotAppWidget');
+    if (chatbot) chatbot.style.display = 'block';
 
     // Update Profile UI
-    document.getElementById('userNameDisplay').innerText = currentUser.fullName || currentUser.email;
-    document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.email).charAt(0).toUpperCase();
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const userAvatar = document.getElementById('userAvatar');
+
+    // Expose current user globally so dashboard.js can access it
+    window._currentUser = currentUser;
+
+    const displayName = currentUser.fullName || currentUser.email || 'User';
+    if (userNameDisplay) userNameDisplay.textContent = displayName;
+    if (userAvatar) userAvatar.textContent = displayName.charAt(0).toUpperCase();
 
     // Apply role restrictions
     applyRoleRestrictions();
     updateNavVisibility();
 
-    // Fetch initial data
+    // Fetch initial data — dashboard.js will also call these on bootstrap
     fetchInventory();
     fetchCustomers();
     fetchOrders();
     fetchSettings();
-
-    // Trigger dashboard view
-    document.getElementById('dashboard-view').style.display = 'block';
-
-    // reset error in case
-    document.getElementById('loginError').style.display = 'none';
 }
 
 function logout() {
     currentUser = null;
     localStorage.removeItem('user');
-    document.getElementById('loginForm').reset();
-
-    document.getElementById('appSidebar').style.display = 'none';
-    document.getElementById('appMain').style.display = 'none';
-    document.getElementById('chatbotAppWidget').style.display = 'none';
-
-    // hide active views
-    document.querySelectorAll('.view-section').forEach(view => {
-        view.style.display = 'none';
-        view.classList.remove('active');
-    });
-
-    const loginView = document.getElementById('login-view');
-    loginView.style.display = 'flex';
-    loginView.classList.add('active');
+    window.location.href = '/auth.html';
 }
 
 function applyRoleRestrictions() {
@@ -182,12 +100,15 @@ function applyRoleRestrictions() {
 }
 
 function updateNavVisibility() {
-    // Hide/Show specific sidebar links based on role
-    const navLinks = document.querySelectorAll('.nav-links li');
-    navLinks.forEach(li => {
-        if (li.classList.contains('admin-only') && currentUser.role !== 'ADMIN') li.style.display = 'none';
-        else if (li.classList.contains('customer-only') && currentUser.role !== 'CUSTOMER') li.style.display = 'none';
-        else li.style.display = 'block';
+    // Hide/Show sidebar items and content sections based on role
+    // Works with both old .nav-links li and new .nav-item classes
+    document.querySelectorAll('.nav-item, .nav-links li').forEach(li => {
+        if (li.classList.contains('admin-only') && currentUser.role !== 'ADMIN')
+            li.style.display = 'none';
+        else if (li.classList.contains('customer-only') && currentUser.role !== 'CUSTOMER')
+            li.style.display = 'none';
+        else
+            li.style.display = '';
     });
 }
 
