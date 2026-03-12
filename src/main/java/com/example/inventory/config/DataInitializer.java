@@ -1,9 +1,7 @@
 package com.example.inventory.config;
 
-import com.example.inventory.model.Customer;
 import com.example.inventory.model.Product;
 import com.example.inventory.model.User;
-import com.example.inventory.repository.CustomerRepository;
 import com.example.inventory.repository.ProductRepository;
 import com.example.inventory.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -14,12 +12,10 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
 
-    public DataInitializer(UserRepository userRepository, ProductRepository productRepository, CustomerRepository customerRepository) {
+    public DataInitializer(UserRepository userRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -44,13 +40,7 @@ public class DataInitializer implements CommandLineRunner {
             productRepository.save(new Product("Dual-Band WiFi 6 Router", "Multi-gigabit speed, expanded coverage", 35, 159.99, "ELE-1010"));
         }
 
-        // Seed initial customers if empty
-        if (customerRepository.count() == 0) {
-            customerRepository.save(new Customer("TechSolutions Inc.", "contact@techsolutions.com", "+1-555-0101", "123 Innovation Drive, San Jose", 12, "Active"));
-            customerRepository.save(new Customer("Pixel Perfect Studio", "hello@pixelperfect.io", "+1-555-0102", "456 Creative Ave, Brooklyn", 5, "Active"));
-            customerRepository.save(new Customer("Cyberdyne Systems", "it@cyberdyne.com", "+1-555-0103", "1984 Future Street, Austin", 28, "Active"));
-            customerRepository.save(new Customer("Stark Enterprises", "procurement@stark.com", "+1-555-0104", "890 Malibu Road, CA", 45, "Active"));
-            customerRepository.save(new Customer("Wayne Corp", "info@wayne.com", "+1-555-0105", "1007 Mountain Drive, Gotham", 15, "Inactive"));
-        }
+        // No customer seed data — customers are managed entirely by the admin.
     }
 }
+
