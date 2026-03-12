@@ -13,10 +13,12 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
+    private final com.example.inventory.service.UserService userService;
 
     @Autowired
-    public CustomerController(CustomerRepository customerRepository) {
+    public CustomerController(CustomerRepository customerRepository, com.example.inventory.service.UserService userService) {
         this.customerRepository = customerRepository;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -26,7 +28,23 @@ public class CustomerController {
 
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+        Customer savedCustomer = customerRepository.save(customer);
+        
+        // Link to a real User account if passcode is provided
+        if (customer.getPasscode() != null && !customer.getPasscode().isEmpty()) {
+            try {
+                userService.createUserAccount(
+                    savedCustomer.getName(), 
+                    savedCustomer.getEmail(), 
+                    customer.getPasscode(), 
+                    "CUSTOMER"
+                );
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to create User for Customer: " + e.getMessage());
+            }
+        }
+        
+        return savedCustomer;
     }
 
     @GetMapping("/{id}")

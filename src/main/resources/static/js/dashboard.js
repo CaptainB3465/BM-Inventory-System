@@ -482,8 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const res = id
-                ? await fetch(`/api/products/${id}`, { method: 'PUT',   headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-                : await fetch('/api/products',        { method: 'POST',  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                ? await fetch(`/api/inventory/${id}`, { method: 'PUT',   headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+                : await fetch('/api/inventory',        { method: 'POST',  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
             if (res.ok) {
                 closeModal();
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.editProduct = async function (id) {
         try {
-            const res = await fetch(`/api/products/${id}`);
+            const res = await fetch(`/api/inventory/${id}`);
             const p   = await res.json();
             openModal(p);
         } catch {
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deleteProduct = async function (id) {
         if (!confirm('Are you sure you want to delete this product?')) return;
         try {
-            const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/inventory/${id}`, { method: 'DELETE' });
             if (res.ok) await bootstrapDashboard();
             else alert('Failed to delete product.');
         } catch {
@@ -546,6 +546,14 @@ document.addEventListener('DOMContentLoaded', () => {
             address: document.getElementById('customerAddress').value,
             status:  document.getElementById('customerStatus').value,
         };
+
+        const pass = document.getElementById('customerPasscode').value;
+        const conf = document.getElementById('customerConfirmPasscode').value;
+
+        if (pass || conf) {
+            if (pass !== conf) return alert('Passcodes do not match!');
+            payload.passcode = pass;
+        }
 
         try {
             const res = id
@@ -587,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // HELPERS
     // ----------------------------------------------------------
     async function fetchProducts() {
-        const res = await fetch('/api/products');
+        const res = await fetch('/api/inventory');
         if (!res.ok) throw new Error('Products fetch failed');
         return res.json();
     }
@@ -618,6 +626,116 @@ document.addEventListener('DOMContentLoaded', () => {
             row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
         });
     });
+
+    // ----------------------------------------------------------
+    // SUPPLIERS
+    // ----------------------------------------------------------
+    window.loadSuppliers = async function () {
+        const tbody = document.getElementById('supplierBody'); // Assuming we add this in index.html shortly if needed
+        if (!tbody) return;
+        try {
+            const res = await fetch('/api/suppliers');
+            if (!res.ok) throw new Error();
+            const suppliers = await res.json();
+
+            if (!suppliers.length) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No suppliers yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = suppliers.map(s => `
+            <tr>
+                <td>${s.name || '—'}</td>
+                <td>${s.company || '—'}</td>
+                <td>${s.email || '—'}</td>
+                <td><span class="status-tag ${s.status === 'Active' ? 'tag-green' : 'tag-gray'}">${s.status || 'Active'}</span></td>
+                <td>
+                    <button class="tbl-btn" onclick="editSupplier(${s.id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="tbl-btn del" onclick="deleteSupplier(${s.id})"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>`).join('');
+        } catch {
+            tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No supplier data available.</td></tr>`;
+        }
+    };
+
+    window.openSupplierModal = function (supplier = null) {
+        document.getElementById('supplierModalTitle').textContent = supplier ? 'Edit Supplier' : 'Add New Supplier';
+        document.getElementById('supplierId').value      = supplier?.id ?? '';
+        document.getElementById('supplierName').value    = supplier?.name ?? '';
+        document.getElementById('supplierCompany').value = supplier?.company ?? '';
+        document.getElementById('supplierEmail').value   = supplier?.email ?? '';
+        document.getElementById('supplierPhone').value   = supplier?.phone ?? '';
+        document.getElementById('supplierAddress').value = supplier?.address ?? '';
+        document.getElementById('supplierStatus').value  = supplier?.status ?? 'Active';
+        document.getElementById('supplierModal').classList.remove('hidden');
+    };
+
+    window.closeModal = window.closeModal || function() {};
+    const oldCloseModal = window.closeModal;
+    window.closeModal = function(modalId) {
+        if(modalId === 'supplierModal') {
+            document.getElementById('supplierModal').classList.add('hidden');
+            document.getElementById('supplierForm').reset();
+        } else {
+            oldCloseModal();
+        }
+    };
+
+    window.saveSupplier = async function () {
+        const id = document.getElementById('supplierId').value;
+        const payload = {
+            name:    document.getElementById('supplierName').value,
+            company: document.getElementById('supplierCompany').value,
+            email:   document.getElementById('supplierEmail').value,
+            phone:   document.getElementById('supplierPhone').value,
+            address: document.getElementById('supplierAddress').value,
+            status:  document.getElementById('supplierStatus').value,
+        };
+
+        const pass = document.getElementById('supplierPasscode').value;
+        const conf = document.getElementById('supplierConfirmPasscode').value;
+
+        if (pass || conf) {
+            if (pass !== conf) return alert('Passcodes do not match!');
+            payload.passcode = pass;
+        }
+
+        try {
+            const res = id
+                ? await fetch(`/api/suppliers/${id}`, { method: 'PUT',  headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+                : await fetch('/api/suppliers',        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+            if (res.ok) {
+                window.closeModal('supplierModal');
+                window.loadSuppliers();
+            } else {
+                alert('Failed to save supplier.');
+            }
+        } catch {
+            alert('Network error.');
+        }
+    };
+
+    window.editSupplier = async function (id) {
+        try {
+            const res = await fetch(`/api/suppliers/${id}`);
+            const s   = await res.json();
+            window.openSupplierModal(s);
+        } catch {
+            alert('Failed to load supplier.');
+        }
+    };
+
+    window.deleteSupplier = async function (id) {
+        if (!confirm('Delete this supplier?')) return;
+        try {
+            const res = await fetch(`/api/suppliers/${id}`, { method: 'DELETE' });
+            if (res.ok) window.loadSuppliers();
+        } catch {
+            alert('Network error.');
+        }
+    };
 
     // ----------------------------------------------------------
     // INIT

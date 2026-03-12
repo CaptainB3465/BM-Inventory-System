@@ -21,6 +21,9 @@ public class Customer {
     private int totalOrders;
     private String status; // "Active", "Inactive"
 
+    @jakarta.persistence.Transient
+    private String passcode;
+
     public Customer() {
     }
 
@@ -88,5 +91,13 @@ public class Customer {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPasscode() {
+        return passcode;
+    }
+
+    public void setPasscode(String passcode) {
+        this.passcode = passcode;
     }
 }

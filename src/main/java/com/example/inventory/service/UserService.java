@@ -19,13 +19,17 @@ public class UserService {
     }
 
     public User registerUser(String fullName, String email, String passcode) {
+        return createUserAccount(fullName, email, passcode, "CUSTOMER");
+    }
+
+    public User createUserAccount(String fullName, String email, String passcode, String role) {
         if (userRepository.existsByEmail(email)) {
             throw new RuntimeException("Email already in use.");
         }
         if (passcode.length() < 6) {
             throw new RuntimeException("Passcode must be at least 6 characters long.");
         }
-        User user = new User(fullName, email, passcode, "CUSTOMER");
+        User user = new User(fullName, email, passcode, role);
         return userRepository.save(user);
     }
 
