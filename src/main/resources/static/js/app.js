@@ -22,17 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/auth.html';
     }
 
-    // Add event listener for product form submit
-    const productForm = document.getElementById('productForm');
-    if (productForm) productForm.addEventListener('submit', handleFormSubmit);
-
-    // Add event listener for customer form submit
-    const customerForm = document.getElementById('customerForm');
-    if (customerForm) customerForm.addEventListener('submit', handleCustomerSubmit);
-
-    // Add event listener for settings form submit
-    const settingsForm = document.getElementById('settingsForm');
-    if (settingsForm) settingsForm.addEventListener('submit', handleSettingsSubmit);
+    // NOTE: productForm, customerForm, and settingsForm submit handlers are
+    // managed by dashboard.js which has the full, up-to-date implementations.
+    // Do NOT add duplicate listeners here.
 
     // Setup search functionality
     document.getElementById('searchInput').addEventListener('input', (e) => {
