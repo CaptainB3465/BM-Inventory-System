@@ -596,6 +596,17 @@
                 </select>
             </div>
 
+            <div class="row g-3 mb-3" id="customerPasswordSection">
+                <div class="col-6">
+                    <label class="form-label">Temporary Passcode</label>
+                    <input type="password" id="customerPasscode" class="form-control" placeholder="For new login">
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Confirm Passcode</label>
+                    <input type="password" id="customerConfirmPasscode" class="form-control">
+                </div>
+            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn-secondary-sm" onclick="closeCustomerModal()">Cancel</button>
                 <button type="submit" class="btn-action">Save Customer</button>
