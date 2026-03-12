@@ -1,3 +1,4 @@
+
 package com.example.inventory.config;
 
 import org.springframework.context.annotation.Bean;
