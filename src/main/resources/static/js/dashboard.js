@@ -422,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${c.address || '—'}</td>
                 <td>${c.orderCount ?? '—'}</td>
                 <td><span class="status-tag tag-green">Active</span></td>
-                <td class="admin-only"><span class="sku-tag">${c.passcode || '—'}</span></td>
                 <td class="admin-only">
                     <button class="tbl-btn" onclick="editCustomer(${c.id})"><i class="fa-solid fa-pen"></i></button>
                     <button class="tbl-btn del" onclick="deleteCustomer(${c.id})"><i class="fa-solid fa-trash"></i></button>
@@ -650,7 +649,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${s.company || '—'}</td>
                 <td>${s.email || '—'}</td>
                 <td><span class="status-tag ${s.status === 'Active' ? 'tag-green' : 'tag-gray'}">${s.status || 'Active'}</span></td>
-                <td class="admin-only"><span class="sku-tag">${s.passcode || '—'}</span></td>
                 <td class="admin-only">
                     <button class="tbl-btn" onclick="editSupplier(${s.id})"><i class="fa-solid fa-pen"></i></button>
                     <button class="tbl-btn del" onclick="deleteSupplier(${s.id})"><i class="fa-solid fa-trash"></i></button>

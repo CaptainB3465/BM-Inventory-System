@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Random;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(String fullName, String email, String passcode) {
@@ -29,18 +33,15 @@ public class UserService {
         if (passcode.length() < 6) {
             throw new RuntimeException("Passcode must be at least 6 characters long.");
         }
-        User user = new User(fullName, email, passcode, role);
+        // Hash the password before saving
+        String encodedPasscode = passwordEncoder.encode(passcode);
+        User user = new User(fullName, email, encodedPasscode, role);
         return userRepository.save(user);
     }
 
     public Optional<User> loginUser(String email, String passcode) {
         return userRepository.findByEmail(email)
-                .filter(user -> user.getPasscode().equals(passcode));
-    }
-
-    public String getPasscodeForEmail(String email) {
-        if (email == null || email.isEmpty()) return "";
-        return userRepository.findByEmail(email).map(User::getPasscode).orElse("");
+                .filter(user -> passwordEncoder.matches(passcode, user.getPasscode()));
     }
 
     public String generateResetCode(String email) {
@@ -69,7 +70,7 @@ public class UserService {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (resetCode.equals(user.getResetCode())) {
-                user.setPasscode(newPasscode);
+                user.setPasscode(passwordEncoder.encode(newPasscode));
                 user.setResetCode(null); // Clear reset code after use
                 userRepository.save(user);
                 return true;

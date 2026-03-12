@@ -24,11 +24,7 @@ public class SupplierController {
 
     @GetMapping
     public List<Supplier> getAllSuppliers() {
-        List<Supplier> suppliers = supplierRepository.findAll();
-        for (Supplier s : suppliers) {
-            s.setPasscode(userService.getPasscodeForEmail(s.getEmail()));
-        }
-        return suppliers;
+        return supplierRepository.findAll();
     }
 
     @PostMapping
