@@ -23,9 +23,13 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Seed Users if empty — passwords are bcrypt-hashed so login works
-        if (userRepository.count() == 0) {
+        // Seed admin user if not present — uses bcrypt so login works
+        if (!userRepository.existsByEmail("admin@example.com")) {
             userRepository.save(new User("Admin User", "admin@example.com", passwordEncoder.encode("admin123"), "ADMIN"));
+        }
+
+        // Seed demo customer user if not present
+        if (!userRepository.existsByEmail("customer@example.com")) {
             userRepository.save(new User("Demo Customer", "customer@example.com", passwordEncoder.encode("cust123"), "CUSTOMER"));
         }
 
