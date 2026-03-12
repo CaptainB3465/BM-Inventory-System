@@ -17,10 +17,12 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserService userService;
+    private final com.example.inventory.repository.CustomerRepository customerRepository;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, com.example.inventory.repository.CustomerRepository customerRepository) {
         this.userService = userService;
+        this.customerRepository = customerRepository;
     }
 
     @PostMapping("/register")
@@ -30,6 +32,15 @@ public class AuthController {
                 return ResponseEntity.badRequest().body("Passcodes do not match.");
             }
             User user = userService.registerUser(request.getFullName(), request.getEmail(), request.getPasscode());
+            
+            // Also provision the Customer record
+            Customer customer = new Customer();
+            customer.setName(request.getFullName());
+            customer.setEmail(request.getEmail());
+            customer.setStatus("Active");
+            customer.setTotalOrders(0);
+            customerRepository.save(customer);
+
             return ResponseEntity.ok(new LoginResponse(user.getEmail(), user.getFullName(), user.getRole(), "SUCCESS"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

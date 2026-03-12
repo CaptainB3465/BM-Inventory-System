@@ -23,7 +23,11 @@ public class CustomerController {
 
     @GetMapping
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
+        for (Customer c : customers) {
+            c.setPasscode(userService.getPasscodeForEmail(c.getEmail()));
+        }
+        return customers;
     }
 
     @PostMapping

@@ -568,15 +568,16 @@ a { color: inherit; text-decoration: none; }
 .link-more:hover { color: var(--primary-dark); }
 
 /* Charts */
-.chart-card   { height: 340px; display: flex; flex-direction: column; }
-.donut-card   { height: 340px; display: flex; flex-direction: column; }
+.chart-card   { height: 340px; display: flex; flex-direction: column; overflow: hidden; }
+.donut-card   { min-height: 340px; height: auto; display: flex; flex-direction: column; }
 .chart-wrap   { flex: 1; position: relative; }
 .donut-wrap   { max-height: 200px; }
 
 .donut-legend {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
     margin-top: 12px;
 }
 

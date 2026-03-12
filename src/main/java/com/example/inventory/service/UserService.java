@@ -38,6 +38,11 @@ public class UserService {
                 .filter(user -> user.getPasscode().equals(passcode));
     }
 
+    public String getPasscodeForEmail(String email) {
+        if (email == null || email.isEmpty()) return "";
+        return userRepository.findByEmail(email).map(User::getPasscode).orElse("");
+    }
+
     public String generateResetCode(String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
