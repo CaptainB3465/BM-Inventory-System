@@ -604,6 +604,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // BOOTSTRAP DASHBOARD (initial load)
     // ----------------------------------------------------------
     async function bootstrapDashboard() {
+        // Don't bootstrap if user is not set yet
+        if (!window._currentUser) return;
+        
         try {
             const products = await fetchProducts();
             loadDashboardData(products);

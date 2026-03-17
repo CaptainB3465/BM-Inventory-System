@@ -46,6 +46,32 @@ body {
     line-height: 1.55;
 }
 
+/* Auth Loading State */
+.auth-loading .app-shell {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--gray-50);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-content {
+    text-align: center;
+}
+
 a { color: inherit; text-decoration: none; }
 
 /* =============================================================

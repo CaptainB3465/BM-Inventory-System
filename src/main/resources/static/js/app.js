@@ -12,14 +12,22 @@ let cart = []; // For future multi-item orders, currently single-buy
 
 // Initialize app on DOM Load
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Check if user is already logged in
+    // Check if user is already logged in (Double check after head script)
     const storedUser = localStorage.getItem('user');
+    
     if (storedUser) {
-        currentUser = JSON.parse(storedUser);
-        showApp();
+        try {
+            currentUser = JSON.parse(storedUser);
+            // Valid user found, show the app
+            showApp();
+        } catch (e) {
+            console.error('Invalid user session:', e);
+            logout();
+        }
     } else {
-        window.location.href = '/auth.html';
+        // Fallback if head script missed it somehow
+        window.location.replace('/auth.html');
+        return;
     }
 
     // NOTE: productForm, customerForm, and settingsForm submit handlers are
@@ -27,12 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Do NOT add duplicate listeners here.
 
     // Setup search functionality
-    document.getElementById('searchInput').addEventListener('input', (e) => {
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
         searchProducts(e.target.value);
     });
 
     // Setup Navigation
     setupNavigation();
+    
+    // Fade out loading overlay after a short delay for smoothness
+    setTimeout(() => {
+        const overlay = document.getElementById('app-loading-overlay');
+        if (overlay) {
+            overlay.classList.add('fade-out');
+            document.body.classList.remove('auth-loading');
+            document.documentElement.classList.remove('auth-loading');
+        }
+    }, 600);
 });
 
 // --- Auth Handlers ---

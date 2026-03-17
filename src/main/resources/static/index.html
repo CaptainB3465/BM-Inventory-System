@@ -16,8 +16,33 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
     <!-- Dashboard CSS -->
     <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- EARLY AUTH CHECK (Prevent Flicker) -->
+    <script>
+        (function() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.replace('/auth.html');
+            } else {
+                // Pre-verify structure if needed, but primarily we just want to avoid
+                // rendering the body if no user exists.
+                document.documentElement.classList.add('auth-loading');
+            }
+        })();
+    </script>
 </head>
-<body>
+<body class="auth-loading">
+
+<!-- Loading Spinner Overlay -->
+<div id="app-loading-overlay" class="loading-overlay">
+    <div class="loading-content">
+        <div class="brand-icon mb-3" style="width: 50px; height: 50px; margin: 0 auto;"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 fw-medium text-secondary">Securing Session...</p>
+    </div>
+</div>
 
 <!-- ============================================================
      APP SHELL
