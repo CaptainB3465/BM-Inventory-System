@@ -18,16 +18,18 @@ public class User {
     private String email;
     private String passcode;
     private String role; // "ADMIN" or "CUSTOMER"
+    private String address;
     private String resetCode;
 
     public User() {
     }
 
-    public User(String fullName, String email, String passcode, String role) {
+    public User(String fullName, String email, String passcode, String role, String address) {
         this.fullName = fullName;
         this.email = email;
         this.passcode = passcode; // In a real app, this should be hashed
         this.role = role;
+        this.address = address;
     }
 
     public Long getId() {
@@ -76,5 +78,13 @@ public class User {
 
     public void setResetCode(String resetCode) {
         this.resetCode = resetCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

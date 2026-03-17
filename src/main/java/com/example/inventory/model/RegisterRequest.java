@@ -5,6 +5,7 @@ public class RegisterRequest {
     private String email;
     private String passcode;
     private String confirmPasscode;
+    private String address;
 
     public RegisterRequest() {}
 
@@ -38,5 +39,13 @@ public class RegisterRequest {
 
     public void setConfirmPasscode(String confirmPasscode) {
         this.confirmPasscode = confirmPasscode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

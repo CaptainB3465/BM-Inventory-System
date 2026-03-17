@@ -22,11 +22,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(String fullName, String email, String passcode) {
-        return createUserAccount(fullName, email, passcode, "CUSTOMER");
+    public User registerUser(String fullName, String email, String passcode, String address) {
+        return createUserAccount(fullName, email, passcode, "CUSTOMER", address);
     }
 
-    public User createUserAccount(String fullName, String email, String passcode, String role) {
+    public User createUserAccount(String fullName, String email, String passcode, String role, String address) {
         if (userRepository.existsByEmail(email)) {
             throw new RuntimeException("Email already in use.");
         }
@@ -35,7 +35,7 @@ public class UserService {
         }
         // Hash the password before saving
         String encodedPasscode = passwordEncoder.encode(passcode);
-        User user = new User(fullName, email, encodedPasscode, role);
+        User user = new User(fullName, email, encodedPasscode, role, address);
         return userRepository.save(user);
     }
 

@@ -31,12 +31,13 @@ public class AuthController {
             if (!request.getPasscode().equals(request.getConfirmPasscode())) {
                 return ResponseEntity.badRequest().body("Passcodes do not match.");
             }
-            User user = userService.registerUser(request.getFullName(), request.getEmail(), request.getPasscode());
+            User user = userService.registerUser(request.getFullName(), request.getEmail(), request.getPasscode(), request.getAddress());
             
             // Also provision the Customer record
             Customer customer = new Customer();
             customer.setName(request.getFullName());
             customer.setEmail(request.getEmail());
+            customer.setAddress(request.getAddress());
             customer.setStatus("Active");
             customer.setTotalOrders(0);
             customerRepository.save(customer);

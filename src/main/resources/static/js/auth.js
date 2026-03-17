@@ -143,11 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const fullName       = document.getElementById('reg-name').value.trim();
         const email          = document.getElementById('reg-email').value.trim();
+        const address        = document.getElementById('reg-address').value.trim();
         const passcode       = document.getElementById('reg-passcode').value;
         const confirmPasscode = document.getElementById('reg-confirm').value;
 
         // Validation
-        if (!fullName || !email || !passcode || !confirmPasscode) {
+        if (!fullName || !email || !address || !passcode || !confirmPasscode) {
             showAlert('reg-error', 'Please fill in all fields.'); return;
         }
         if (!isValidEmail(email)) {
