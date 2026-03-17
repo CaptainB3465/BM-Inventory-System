@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetId === 'stock-view')     loadInventoryTable();
         if (targetId === 'orders-view')    loadOrders();
         if (targetId === 'customers-view') loadCustomers();
+        if (targetId === 'suppliers-view') loadSuppliers();
 
         closeSidebar();
     }
@@ -461,6 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('description').value = product?.description ?? '';
         document.getElementById('quantity').value    = product?.quantity ?? '';
         document.getElementById('price').value       = product?.price ?? '';
+        document.getElementById('imageUrl').value    = product?.imageUrl ?? '';
         document.getElementById('productModal').classList.remove('hidden');
     };
 
@@ -478,6 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: document.getElementById('description').value,
             quantity:    parseInt(document.getElementById('quantity').value, 10),
             price:       parseFloat(document.getElementById('price').value),
+            imageUrl:    document.getElementById('imageUrl').value,
         };
 
         try {

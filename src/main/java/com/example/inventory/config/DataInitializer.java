@@ -35,16 +35,16 @@ public class DataInitializer implements CommandLineRunner {
 
         // Seed initial products if empty
         if (productRepository.count() == 0) {
-            productRepository.save(new Product("Ultra-HD 4K Monitor", "27-inch IPS display, 144Hz refresh rate", 30, 399.99, "ELE-1001"));
-            productRepository.save(new Product("Nueral Sound Wireless Headphones", "Noise-cancelling, 40h battery life", 55, 249.50, "ELE-1002"));
-            productRepository.save(new Product("ProGamer Mechanical Keyboard", "RGB Lighting, Brown Switches", 25, 129.00, "ELE-1003"));
-            productRepository.save(new Product("ErgoTrack Wireless Mouse", "High precision sensor, ergonomic design", 150, 59.99, "ELE-1004"));
-            productRepository.save(new Product("Multi-Port USB-C Hub", "8-in-1 adapter with HDMI and SD card reader", 85, 45.00, "ELE-1005"));
-            productRepository.save(new Product("SmartHome Security Camera", "1080p HD, Night vision, Two-way audio", 40, 89.99, "ELE-1006"));
-            productRepository.save(new Product("Portable SSD 1TB", "High-speed NVMe, USB 3.2 Gen 2", 60, 115.00, "ELE-1007"));
-            productRepository.save(new Product("Thunderbolt 4 Docking Station", "Triple 4K display support, 100W PD", 15, 299.00, "ELE-1008"));
-            productRepository.save(new Product("Noise-Isolating Earbuds", "TWS, IPX7 water resistant, compact case", 200, 79.50, "ELE-1009"));
-            productRepository.save(new Product("Dual-Band WiFi 6 Router", "Multi-gigabit speed, expanded coverage", 35, 159.99, "ELE-1010"));
+            productRepository.save(new Product("Ultra-HD 4K Monitor", "27-inch IPS display, 144Hz refresh rate", 30, 399.99, "ELE-1001", "images/monitor.png"));
+            productRepository.save(new Product("Nueral Sound Wireless Headphones", "Noise-cancelling, 40h battery life", 55, 249.50, "ELE-1002", "images/headphones.png"));
+            productRepository.save(new Product("ProGamer Mechanical Keyboard", "RGB Lighting, Brown Switches", 25, 129.00, "ELE-1003", "images/keyboard.png"));
+            productRepository.save(new Product("ErgoTrack Wireless Mouse", "High precision sensor, ergonomic design", 150, 59.99, "ELE-1004", "images/mouse.png"));
+            productRepository.save(new Product("Multi-Port USB-C Hub", "8-in-1 adapter with HDMI and SD card reader", 85, 45.00, "ELE-1005", "images/usbc_hub.png"));
+            productRepository.save(new Product("SmartHome Security Camera", "1080p HD, Night vision, Two-way audio", 40, 89.99, "ELE-1006", "images/security_camera.png"));
+            productRepository.save(new Product("Portable SSD 1TB", "High-speed NVMe, USB 3.2 Gen 2", 60, 115.00, "ELE-1007", null));
+            productRepository.save(new Product("Thunderbolt 4 Docking Station", "Triple 4K display support, 100W PD", 15, 299.00, "ELE-1008", null));
+            productRepository.save(new Product("Noise-Isolating Earbuds", "TWS, IPX7 water resistant, compact case", 200, 79.50, "ELE-1009", null));
+            productRepository.save(new Product("Dual-Band WiFi 6 Router", "Multi-gigabit speed, expanded coverage", 35, 159.99, "ELE-1010", null));
         }
 
         // No customer seed data — customers are managed entirely by the admin.

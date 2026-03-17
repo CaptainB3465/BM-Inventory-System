@@ -19,16 +19,18 @@ public class Product {
     private Integer quantity;
     private Double price;
     private String sku;
+    private String imageUrl;
 
     public Product() {
     }
 
-    public Product(String name, String description, Integer quantity, Double price, String sku) {
+    public Product(String name, String description, Integer quantity, Double price, String sku, String imageUrl) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
         this.sku = sku;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -77,5 +79,13 @@ public class Product {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

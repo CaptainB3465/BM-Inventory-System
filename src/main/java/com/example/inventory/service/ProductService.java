@@ -37,6 +37,7 @@ public class ProductService {
             product.setQuantity(updatedProduct.getQuantity());
             product.setPrice(updatedProduct.getPrice());
             product.setSku(updatedProduct.getSku());
+            product.setImageUrl(updatedProduct.getImageUrl());
             return productRepository.save(product);
         }).orElseThrow(() -> new RuntimeException("Product not found with id " + id));
     }

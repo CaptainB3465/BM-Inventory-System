@@ -571,6 +571,11 @@
                 </div>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Image URL</label>
+                <input type="text" id="imageUrl" class="form-control" placeholder="e.g. images/monitor.png">
+            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn-secondary-sm" onclick="closeModal()">Cancel</button>
                 <button type="submit" class="btn-action">Save Product</button>
@@ -670,62 +675,60 @@
         </div>
     </div>
 
-    <!-- Supplier Modal (New) -->
-    <div class="modal" id="supplierModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="supplierModalTitle">Add/Edit Supplier</h5>
-                    <button type="button" class="btn-close" onclick="closeModal('supplierModal')"></button>
+    </div>
+</div>
+
+<!-- Supplier Modal (Moved out of hidden widget) -->
+<div id="supplierModal" class="modal-backdrop hidden">
+    <div class="modal-box" style="max-width: 600px;">
+        <button class="modal-close" onclick="closeModal('supplierModal')">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="modal-title" id="supplierModalTitle">Add New Supplier</h2>
+        <form id="supplierForm">
+            <input type="hidden" id="supplierId">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Supplier Name</label>
+                    <input type="text" class="form-control" id="supplierName" required>
                 </div>
-                <div class="modal-body">
-                    <form id="supplierForm">
-                        <input type="hidden" id="supplierId">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Supplier Name</label>
-                                <input type="text" class="form-control" id="supplierName" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Company</label>
-                                <input type="text" class="form-control" id="supplierCompany">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="supplierEmail" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="supplierPhone">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Address</label>
-                                <textarea class="form-control" id="supplierAddress" rows="2"></textarea>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Temporary Passcode</label>
-                                <input type="password" class="form-control" id="supplierPasscode" placeholder="For new users">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Confirm Passcode</label>
-                                <input type="password" class="form-control" id="supplierConfirmPasscode">
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Status</label>
-                                <select class="form-select" id="supplierStatus">
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-md-6">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-control" id="supplierCompany">
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('supplierModal')">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveSupplier()">Save Supplier</button>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="supplierEmail" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="supplierPhone">
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" id="supplierAddress" rows="2"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Temporary Passcode</label>
+                    <input type="password" class="form-control" id="supplierPasscode" placeholder="For new users">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Confirm Passcode</label>
+                    <input type="password" class="form-control" id="supplierConfirmPasscode">
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="supplierStatus">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
                 </div>
             </div>
-        </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary-sm" onclick="closeModal('supplierModal')">Cancel</button>
+                <button type="button" class="btn-action" onclick="saveSupplier()">Save Supplier</button>
+            </div>
+        </form>
     </div>
 </div>
 
