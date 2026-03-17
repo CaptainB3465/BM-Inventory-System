@@ -22,6 +22,78 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Dark Theme Variables */
+body.dark-theme {
+    --gray-100: #0f172a;
+    --gray-200: #1e293b;
+    --gray-300: #334155;
+    --gray-500: #94a3b8;
+    --gray-800: #f8fafc;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    background-color: #020617;
+}
+
+body.dark-theme .sidebar,
+body.dark-theme .top-header,
+body.dark-theme .dash-card,
+body.dark-theme .table-container,
+body.dark-theme .modal-content,
+body.dark-theme .chatbot-container,
+body.dark-theme .product-card {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.dark-theme .sidebar-header,
+body.dark-theme .nav-links a,
+body.dark-theme .top-header span,
+body.dark-theme .metric-info h3,
+body.dark-theme .metric-info p,
+body.dark-theme th,
+body.dark-theme td,
+body.dark-theme .product-details h3,
+body.dark-theme .modal h2,
+body.dark-theme label {
+    color: #f8fafc;
+}
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+    background-color: #334155;
+    border-color: #475569;
+    color: #f8fafc;
+}
+
+body.dark-theme .search-bar {
+    background-color: #334155;
+}
+
+body.dark-theme tr:hover td {
+    background-color: #334155;
+}
+
+body.dark-theme .status-tag.tag-gray {
+    background-color: #334155;
+    color: #94a3b8;
+}
+
+body.dark-theme .chatbot-messages {
+    background-color: #0f172a;
+}
+
+body.dark-theme .message.ai .msg-content {
+    background-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-theme .chatbot-input {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
 * {
     margin: 0;
     padding: 0;

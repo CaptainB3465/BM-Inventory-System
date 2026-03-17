@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Stat cards
         document.getElementById('totalProducts').textContent = total;
         document.getElementById('totalStock').textContent    = totalStock.toLocaleString();
-        document.getElementById('totalValue').textContent    = '$' + totalValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        document.getElementById('totalValue').textContent    = window.getCurrencySymbol() + totalValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         document.getElementById('lowStockCount').textContent = low.length + out.length;
 
         // Charts
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${p.name}</td>
                 <td>${p.category || 'General'}</td>
                 <td><strong>${qty}</strong></td>
-                <td>$${parseFloat(p.price ?? 0).toFixed(2)}</td>
+                <td>${window.getCurrencySymbol()}${parseFloat(p.price ?? 0).toFixed(2)}</td>
                 <td>${statusTag}</td>
                 ${actions}
             </tr>`;
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${p.name}</td>
                     <td>${p.description || '—'}</td>
                     <td>${qty}</td>
-                    <td>$${parseFloat(p.price ?? 0).toFixed(2)}</td>
+                    <td>${window.getCurrencySymbol()}${parseFloat(p.price ?? 0).toFixed(2)}</td>
                     ${actions}
                 </tr>`;
             }).join('');
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h3>${p.name}</h3>
                         <p class="product-desc">${p.description || ''}</p>
                         <div class="product-meta">
-                            <span class="product-price">$${parseFloat(p.price ?? 0).toFixed(2)}</span>
+                            <span class="product-price">${window.getCurrencySymbol()}${parseFloat(p.price ?? 0).toFixed(2)}</span>
                             ${tag}
                         </div>
                         ${isAdmin ? `
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${o.orderDate ? new Date(o.orderDate).toLocaleDateString() : '—'}</td>
                 <td>${o.customer?.name || o.customerId || '—'}</td>
                 <td>${o.items?.length ?? 0} item(s)</td>
-                <td>$${parseFloat(o.totalAmount ?? 0).toFixed(2)}</td>
+                <td>${window.getCurrencySymbol()}${parseFloat(o.totalAmount ?? 0).toFixed(2)}</td>
                 <td><span class="status-tag ${o.status === 'COMPLETED' ? 'tag-green' : o.status === 'PENDING' ? 'tag-amber' : 'tag-red'}">${o.status || 'PENDING'}</span></td>
                 <td><button class="tbl-btn" onclick="viewOrder(${o.id})"><i class="fa-solid fa-eye"></i></button></td>
             </tr>`).join('');
@@ -434,22 +434,94 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ----------------------------------------------------------
-    // SETTINGS FORM
+    // SETTINGS & THEME
     // ----------------------------------------------------------
-    document.getElementById('settingsForm')?.addEventListener('submit', e => {
+    async function loadSettings() {
+        try {
+            const res = await fetch('/api/settings');
+            if (!res.ok) throw new Error();
+            const settings = await res.json();
+            
+            // Populate form
+            if (document.getElementById('settingCompanyName')) document.getElementById('settingCompanyName').value = settings.companyName || '';
+            if (document.getElementById('settingCurrency'))    document.getElementById('settingCurrency').value = settings.currency || 'USD';
+            if (document.getElementById('settingThreshold'))   document.getElementById('settingThreshold').value = settings.lowStockThreshold || 10;
+            if (document.getElementById('settingEmail'))       document.getElementById('settingEmail').value = settings.contactEmail || '';
+            if (document.getElementById('settingTheme'))       document.getElementById('settingTheme').value = settings.theme || 'Light';
+            if (document.getElementById('settingEnableChatbot')) document.getElementById('settingEnableChatbot').checked = settings.enableChatbot ?? true;
+
+            // Apply settings
+            localStorage.setItem('currency', settings.currency || 'USD');
+            localStorage.setItem('lowStockThreshold', settings.lowStockThreshold || 10);
+            
+            applyTheme(settings.theme);
+            applyChatbotVisibility(settings.enableChatbot);
+            
+            // Re-bootstrap dashboard to update currency symbols if needed
+            await bootstrapDashboard();
+        } catch (err) {
+            console.error('Failed to load settings:', err);
+        }
+    }
+
+    function applyTheme(theme) {
+        if (theme === 'Dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }
+
+    function applyChatbotVisibility(enabled) {
+        const widget = document.getElementById('chatbotAppWidget');
+        if (widget) widget.style.display = enabled ? 'block' : 'none';
+    }
+
+    window.getCurrencySymbol = function() {
+        const c = localStorage.getItem('currency') || 'USD';
+        switch(c) {
+            case 'KES': return 'KSh ';
+            case 'EUR': return '€';
+            case 'GBP': return '£';
+            default:    return '$';
+        }
+    };
+
+    document.getElementById('settingsForm')?.addEventListener('submit', async e => {
         e.preventDefault();
-        const name      = document.getElementById('settingCompanyName')?.value;
-        const currency  = document.getElementById('settingCurrency')?.value;
-        const threshold = document.getElementById('settingThreshold')?.value;
-        const email     = document.getElementById('settingEmail')?.value;
+        const payload = {
+            companyName:       document.getElementById('settingCompanyName')?.value,
+            currency:          document.getElementById('settingCurrency')?.value,
+            lowStockThreshold: parseInt(document.getElementById('settingThreshold')?.value, 10),
+            contactEmail:      document.getElementById('settingEmail')?.value,
+            theme:             document.getElementById('settingTheme')?.value,
+            enableChatbot:     document.getElementById('settingEnableChatbot')?.checked
+        };
 
-        localStorage.setItem('companyName',       name);
-        localStorage.setItem('currency',          currency);
-        localStorage.setItem('lowStockThreshold', threshold);
-        localStorage.setItem('supportEmail',      email);
-
-        alert('Settings saved!');
+        try {
+            const res = await fetch('/api/settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const updated = await res.json();
+                localStorage.setItem('currency', updated.currency);
+                localStorage.setItem('lowStockThreshold', updated.lowStockThreshold);
+                applyTheme(updated.theme);
+                applyChatbotVisibility(updated.enableChatbot);
+                alert('Settings saved successfully!');
+                await bootstrapDashboard();
+            } else {
+                alert('Failed to save settings.');
+            }
+        } catch {
+            alert('Error saving settings.');
+        }
     });
+
+    // Load settings on init
+    loadSettings();
 
     // ----------------------------------------------------------
     // PRODUCT MODAL
