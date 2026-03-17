@@ -37,7 +37,8 @@ public class CustomerController {
                     savedCustomer.getName(), 
                     savedCustomer.getEmail(), 
                     customer.getPasscode(), 
-                    "CUSTOMER"
+                    "CUSTOMER",
+                    savedCustomer.getAddress()
                 );
             } catch (Exception e) {
                 System.err.println("Warning: Failed to create User for Customer: " + e.getMessage());

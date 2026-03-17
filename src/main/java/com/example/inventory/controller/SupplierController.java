@@ -38,7 +38,8 @@ public class SupplierController {
                     savedSupplier.getName(), 
                     savedSupplier.getEmail(), 
                     supplier.getPasscode(), 
-                    "SUPPLIER"
+                    "SUPPLIER",
+                    savedSupplier.getAddress()
                 );
             } catch (Exception e) {
                 System.err.println("Warning: Failed to create User for Supplier: " + e.getMessage());

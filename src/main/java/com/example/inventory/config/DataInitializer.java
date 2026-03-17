@@ -25,12 +25,12 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Seed admin user if not present — uses bcrypt so login works
         if (!userRepository.existsByEmail("admin@example.com")) {
-            userRepository.save(new User("Admin User", "admin@example.com", passwordEncoder.encode("admin123"), "ADMIN"));
+            userRepository.save(new User("Admin User", "admin@example.com", passwordEncoder.encode("admin123"), "ADMIN", "N/A"));
         }
 
         // Seed demo customer user if not present
         if (!userRepository.existsByEmail("customer@example.com")) {
-            userRepository.save(new User("Demo Customer", "customer@example.com", passwordEncoder.encode("cust123"), "CUSTOMER"));
+            userRepository.save(new User("Demo Customer", "customer@example.com", passwordEncoder.encode("cust123"), "CUSTOMER", "N/A"));
         }
 
         // Seed initial products if empty
